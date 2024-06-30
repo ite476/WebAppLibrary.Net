@@ -1,4 +1,6 @@
 
+using SampleWebApp.Services;
+
 namespace SampleWebApp
 {
     public class Program
@@ -14,16 +16,24 @@ namespace SampleWebApp
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<VerificationService>();
+            builder.Services.AddScoped<DataService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            //if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(policy =>
+            {
+                policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            });
+
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
